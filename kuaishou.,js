@@ -1,0 +1,42 @@
+//document.getElementsByClassName("card-link")[2].click()
+allUrl = ""
+function getMp4Url(){
+    var domArr = document.getElementsByClassName("player-video");
+    if(domArr.length>0){
+        return domArr[0].src;
+    }
+    return null;
+}
+
+function downKs(){
+    if(videoIndex>=videoCard.length){
+        console.log("下载完成:",videoCard.length)
+        document.body.innerHTML='<div style="position: fixed;width:1000px;height:1000px;top: 0px;left: 0px;background-color: #ffffff;z-index: 99999;">'+ allUrl +'</div>';
+        return 
+    }
+    console.log("点击第"+videoIndex+"个视频")
+    videoCard[videoIndex].click()
+    times = setInterval(function(){
+        var mp4Url = getMp4Url();
+        if(mp4Url != null){
+            console.log("第"+videoIndex+"个视频MP4地址:"+mp4Url);
+            allUrl = allUrl + mp4Url + "<br/>";
+            document.getElementsByClassName("close-page")[0].click()
+            clearInterval(times);
+            videoIndex = videoIndex +1
+            setTimeout(function(){
+                if(videoCard.length >0){
+                    downKs()
+                }
+            },500)
+            
+        }  
+    },1000)   
+}
+
+var videoIndex = 0
+var videoCard = document.getElementsByClassName("card-link");
+console.log("开始获取视频，总数量:"+videoCard.length)
+downKs()
+
+
